@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # 20150412: 1035-1050:   /15
 # 20150627: 1600-1710:  1/10
+# TODO: option to control the choice of selection like '/'
+# TODO: option to control TIME_UNIT
+# TODO: parsing of quoted arguments '3/10 4/10 5/10'
 
 import argparse 
 
