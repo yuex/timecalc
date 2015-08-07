@@ -5,30 +5,32 @@
 # TODO: option to control TIME_UNIT
 # TODO: parsing of quoted arguments '3/10 4/10 5/10'
 
-import argparse 
+import argparse
 
 TIME_UNIT = 60
 
+
 def sum_time(*time):
-    total_hrs = sum( [ hrs for hrs,mte in time ] )
-    total_mte = sum( [ mte for hrs,mte in time ] )
-    
-    hrs,mte = divmod( total_mte, TIME_UNIT )
+    total_hrs = sum([hrs for hrs, mte in time])
+    total_mte = sum([mte for hrs, mte in time])
+
+    hrs, mte = divmod(total_mte, TIME_UNIT)
     total_hrs += hrs
     total_mte = mte
-    
+
     return total_hrs, total_mte
 
+
 def avg_time(time, divisor):
-    hrs,mte = time
+    hrs, mte = time
     total_time = hrs * TIME_UNIT + mte
     ret = divmod( round(total_time * 1. / divisor), TIME_UNIT )
     return map(int, ret)
 
 # hm :=
-    #'1/20'  <-> (1, 20)
-    #'/20'   <-> (0, 20)
-    #'1/'    <-> (1, 0)
+    # '1/20'  <-> (1, 20)
+    # '/20'   <-> (0, 20)
+    # '1/'    <-> (1, 0)
 
 def str2hm(arg):
     hm = arg.split('/')
@@ -50,7 +52,7 @@ def arg_parse():
 
     parser_sum = subparsers.add_parser("sum", help="summarize values of time")
     parser_sum.add_argument("time", help="values of time to sumarize",
-            nargs="+", type=str2hm) 
+            nargs="+", type=str2hm)
 
     parser_avg = subparsers.add_parser("avg", help="calculate average")
     parser_avg.add_argument("time", help="total time", type=str2hm)
