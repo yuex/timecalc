@@ -3,7 +3,7 @@ import sys
 import yaml
 from timecalc import sum_time_from_str
 from timecalc import sum_time_from_list
-from timecalc import hm2str
+from timecalc import hm2str, str2hm
 
 
 def sum_str_to_str(times):
@@ -57,20 +57,29 @@ def sum_dict(data):
         return sum_list_to_str(data)
 
 
-def dict_to_yaml(data):
+def dict_to_yaml(data, sort=False):
+    def _get_key(d):
+        v = d.values()[0]
+        return str2hm(v)
 
     def _dict_to_yaml2(data):
         lines = []
 
         idx = 0
+        able_to_sort = True
         for k in data:
             v = data[k]
             if isinstance(v, list):
                 time, subs = v
                 k = '%s %s' % (k, time)
                 v = _dict_to_yaml2(subs)
+                if isinstance(v, list):
+                    able_to_sort = False
             lines.append({k: v})
             idx += 1
+
+        if sort and able_to_sort:
+            lines.sort(key=_get_key, reverse=True)
         return lines
 
     lines = _dict_to_yaml2(data)
@@ -84,4 +93,4 @@ if __name__ == "__main__":
 
     sum_dict(data)
 
-    print dict_to_yaml(data)
+    print dict_to_yaml(data, True)
