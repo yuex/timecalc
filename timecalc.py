@@ -10,24 +10,6 @@ import argparse
 TIME_UNIT = 60
 
 
-def sum_time(*time):
-    total_hrs = sum([hrs for hrs, mte in time])
-    total_mte = sum([mte for hrs, mte in time])
-
-    hrs, mte = divmod(total_mte, TIME_UNIT)
-    total_hrs += hrs
-    total_mte = mte
-
-    return total_hrs, total_mte
-
-
-def avg_time(time, divisor):
-    hrs, mte = time
-    total_time = hrs * TIME_UNIT + mte
-    ret = divmod(round(total_time * 1. / divisor), TIME_UNIT)
-    return map(int, ret)
-
-
 def str2hm(arg):
     # hm :=
     # '1/20'  <-> (1, 20)
@@ -47,14 +29,41 @@ def hm2str(arg):
     return '/'.join(hm)
 
 
+def sum_time(*time):
+    total_hrs = sum([hrs for hrs, mte in time])
+    total_mte = sum([mte for hrs, mte in time])
+
+    hrs, mte = divmod(total_mte, TIME_UNIT)
+    total_hrs += hrs
+    total_mte = mte
+
+    return total_hrs, total_mte
+
+
+def sum_time_from_list(times):
+    times = map(str2hm, times)
+    return sum_time(*times)
+
+
+def sum_time_from_str(times):
+    times = map(str2hm, times.split())
+    return sum_time(*times)
+
+
+def avg_time(time, divisor):
+    hrs, mte = time
+    total_time = hrs * TIME_UNIT + mte
+    ret = divmod(round(total_time * 1. / divisor), TIME_UNIT)
+    return map(int, ret)
+
+
 def arg_parse():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(
         dest="mode", help="which calculation mode to use")
 
     parser_sum = subparsers.add_parser("sum", help="summarize values of time")
-    parser_sum.add_argument(
-        "time", help="values of time to sumarize", nargs="+", type=str2hm)
+    parser_sum.add_argument("time", help="values to sumarize", nargs="+")
 
     parser_avg = subparsers.add_parser("avg", help="calculate average")
     parser_avg.add_argument("time", help="total time", type=str2hm)
@@ -69,7 +78,8 @@ if __name__ == '__main__':
     args = arg_parse()
 
     if args.mode == "sum":
-        print(hm2str(sum_time(*args.time)))
+        print(args.time)
+        print(hm2str(sum_time_from_list(args.time)))
 
     elif args.mode == "avg":
         for d in args.divisor:
