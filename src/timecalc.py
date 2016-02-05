@@ -173,7 +173,6 @@ def main():
     args = arg_parse()
 
     if args.mode == "sum":
-        print(args.time)
         print(hm2str(sum_time_from_list(args.time)))
 
     elif args.mode == "avg":

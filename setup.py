@@ -4,8 +4,10 @@ from setuptools import setup
 
 setup(
     name="timecalc",
-    version="0.1.0",
-    description="a tool to summarize your bills of time",
+    version="0.1.4",
+    description="a tool to make the imitation of Lyubishchev and his time billing method easier",
+    author="Xin YUE",
+    author_email="yuecn41@gmail.com",
     url="https://github.com/yuex/timecalc",
     package_dir={'': 'src'},
     py_modules=['timecalc'],
