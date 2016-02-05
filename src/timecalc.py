@@ -169,7 +169,7 @@ def arg_parse():
     return args
 
 
-if __name__ == '__main__':
+def main():
     args = arg_parse()
 
     if args.mode == "sum":
@@ -181,3 +181,7 @@ if __name__ == '__main__':
             print(hm2str(avg_time(args.time, d)))
     elif args.mode == "yml":
         print analyze_yaml(args.stream)
+
+
+if __name__ == '__main__':
+    main()
