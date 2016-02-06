@@ -8,6 +8,7 @@
 import argparse
 import yaml
 import sys
+import re
 
 
 TIME_UNIT = 60
@@ -69,6 +70,13 @@ def sum_list_to_str(times):
 
 
 def yaml_to_dict2(lines):
+    def strip_time(name):
+        name_pre, _, name_suf = name.rpartition(' ')
+        if re.compile('^\d*/\d*$').match(name_suf):
+            return name_pre
+        else:
+            return name
+
     def _yaml_to_dict(lines, data):
 
         if isinstance(lines, list):
@@ -77,6 +85,7 @@ def yaml_to_dict2(lines):
         elif isinstance(lines, dict):
             assert len(lines) == 1
             name, value = list(lines.items())[0]
+            name = strip_time(name)
             if isinstance(value, list):
                 try:
                     the_d = data[name]
