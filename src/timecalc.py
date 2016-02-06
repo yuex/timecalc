@@ -121,26 +121,27 @@ def sum_dict(data):
 
 def dict_to_yaml(data, sort=False):
     def _get_key(d):
-        v = d.values()[0]
+        k, v = d.items()[0]
+        if isinstance(v, list):
+            _, _, v = k.rpartition(' ')
+        elif isinstance(v, str):
+            pass
         return str2hm(v)
 
     def _dict_to_yaml2(data):
         lines = []
 
         idx = 0
-        able_to_sort = True
         for k in data:
             v = data[k]
             if isinstance(v, list):
                 time, subs = v
                 k = '%s %s' % (k, time)
                 v = _dict_to_yaml2(subs)
-                if isinstance(v, list):
-                    able_to_sort = False
             lines.append({k: v})
             idx += 1
 
-        if sort and able_to_sort:
+        if sort:
             lines.sort(key=_get_key, reverse=True)
         return lines
 
