@@ -69,7 +69,7 @@ def sum_list_to_str(times):
     return hm2str(sum_time_from_list(times))
 
 
-def yaml_to_dict2(lines):
+def yaml_to_dict(lines):
     def strip_time(name):
         name_pre, _, name_suf = name.rpartition(' ')
         if re.compile('^\d*/\d*$').match(name_suf):
@@ -152,7 +152,7 @@ def dict_to_yaml(data, sort=False):
 
 def analyze_yaml(stream):
     def _analyze_yaml(lines):
-        data = yaml_to_dict2(lines)
+        data = yaml_to_dict(lines)
         sum_dict(data)
         return dict_to_yaml(data, True)
 
@@ -165,7 +165,8 @@ def arg_parse():
         dest="mode", help="which calculation mode to use")
 
     parser_sum = subparsers.add_parser("sum", help="summarize values of time")
-    parser_sum.add_argument("time", help="values to sumarize", nargs="+")
+    parser_sum.add_argument("time", help="values to sumarize", nargs="+",
+                            type=str2hm)
 
     parser_avg = subparsers.add_parser("avg", help="calculate average")
     parser_avg.add_argument("time", help="total time", type=str2hm)
@@ -184,13 +185,13 @@ def main():
     args = arg_parse()
 
     if args.mode == "sum":
-        print(hm2str(sum_time_from_list(args.time)))
+        print(hm2str(sum_time(*args.time)))
 
     elif args.mode == "avg":
         for d in args.divisor:
             print(hm2str(avg_time(args.time, d)))
     elif args.mode == "yml":
-        print analyze_yaml(args.stream)
+        print(analyze_yaml(args.stream))
 
 
 if __name__ == '__main__':
