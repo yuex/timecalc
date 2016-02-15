@@ -94,10 +94,11 @@ def yaml_to_dict2(lines):
                     the_d = data[name]
                 _yaml_to_dict(value, the_d)
             elif isinstance(value, str):
+                value = value.split()
                 try:
-                    data[name].append(value)
+                    data[name].extend(value)
                 except KeyError:
-                    data[name] = [value]
+                    data[name] = value
 
     data = {}
     _yaml_to_dict(lines, data)
