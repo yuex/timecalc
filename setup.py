@@ -12,7 +12,7 @@ setup(
     package_dir={'': 'src'},
     py_modules=['timecalc'],
     install_requires=[
-        "PyYAML==3.11",
+        "PyYAML==5.1",
     ],
     entry_points={
         'console_scripts': ['timecalc=timecalc:main'],
